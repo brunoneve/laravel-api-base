@@ -1,0 +1,25 @@
+{
+    "name": "solvolab/user",
+    "description": "",
+    "authors": [
+        {
+            "name": "Bruno Neves Coelho",
+            "email": "brunu.neves@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\User\\Providers\\UserServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\User\\": ""
+        }
+    }
+}
