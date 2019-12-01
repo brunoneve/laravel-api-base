@@ -165,15 +165,19 @@ return [
         /*
          * Package Service Providers...
          */
+        Migrator\MigrationServiceProvider::class,
+
+        /**
+         * Domains Service Providers..
+         */
+        App\Domains\Users\Providers\DomainServiceProvider::class,
 
         /*
-         * Application Service Providers...
+         * Units Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+
+        App\Units\Auth\Providers\UnitServiceProvider::class,
+
 
     ],
 
