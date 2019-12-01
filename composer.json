@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "solvolab/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "artesaos/migrator": "^2.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/passport": "^8.0",
         "laravel/tinker": "^1.0",
-        "nwidart/laravel-modules": "^6.2"
+        "laravellegends/pt-br-validator": "6.*",
+        "spatie/laravel-query-builder": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
