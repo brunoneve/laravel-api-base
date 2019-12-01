@@ -1,0 +1,77 @@
+# CONFIG
+version: '2'
+
+# VOLUMES
+volumes:
+  # MYSQL
+  solvolab-mysql-data:
+    driver: local
+  # REDIS
+  solvolab-redis-data:
+    driver: local
+  # ~/.config
+  solvolab-temp-config:
+    driver: local
+  # ~/.local
+  solvolab-temp-local:
+    driver: local
+  # ~/.cache
+  solvolab-temp-cache:
+    driver: local
+  # ~/.composer
+  solvolab-temp-composer:
+    driver: local
+
+# SERVICES
+services:
+  # API
+  api:
+    image: ambientum/php:7.3-nginx
+    container_name: solvolab-api
+    environment:
+      - XDEBUG_ENABLED=true
+      - PHP_IDE_CONFIG=serverName=ambientum
+    volumes:
+      - .:/var/www/app
+      - solvolab-temp-config:/home/ambientum/.config
+      - solvolab-temp-cache:/home/ambientum/.cache
+      - solvolab-temp-local:/home/ambientum/.local
+      - solvolab-temp-composer:/home/ambientum/.composer
+    links:
+      - db
+      - cache
+      - smtp
+    ports:
+      - 8000:8080
+      - 8443:8083
+
+  # SMTP
+  smtp:
+    image:  mailhog/mailhog
+    container_name: solvolab-smtp
+    ports:
+      - 1025:1025
+      - 1080:1080
+
+  # db
+  db:
+    image: mysql:5.7
+    container_name: solvolab-mysql
+    volumes:
+      - solvolab-mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=solvolab
+      - MYSQL_DATABASE=solvo
+      - MYSQL_USER=solvo
+      - MYSQL_PASSWORD=solvo
+
+  cache:
+    image: redis:4.0
+    container_name: solvolab-redis
+    command: --appendonly yes
+    volumes:
+      - solvolab-redis-data:/data
+    ports:
+      - 6379
