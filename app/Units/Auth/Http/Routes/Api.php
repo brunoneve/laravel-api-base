@@ -9,6 +9,7 @@ class Api extends RouteFile
     protected function routes()
     {
         $this->userRoutes();
+        $this->loginRoutes();
     }
 
     protected function userRoutes()
@@ -34,5 +35,10 @@ class Api extends RouteFile
                 $this->router->get('user', 'UserController@user');
             });
         });*/
+    }
+
+    protected function loginRoutes()
+    {
+        $this->router->post('login', 'LoginController@login');
     }
 }
