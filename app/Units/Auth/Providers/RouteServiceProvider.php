@@ -4,6 +4,7 @@ namespace App\Units\Auth\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use App\Units\Auth\Http\Routes\Api;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -48,9 +49,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('app/Units/Auth/Http/routes.php'));
+        (new Api([
+            'middleware'    => 'api',
+            'namespace'     => $this->namespace,
+            //'prefix'        => 'api',
+        ]))->register();
     }
 }
