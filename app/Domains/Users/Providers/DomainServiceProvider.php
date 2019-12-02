@@ -4,6 +4,8 @@ namespace App\Domains\Users\Providers;
 
 use App\Domains\Users\Database\Migrations\CreatePasswordResetTable;
 use App\Domains\Users\Database\Migrations\CreateUsersTable;
+use App\Domains\Users\Database\Factories\UserFactory;
+use App\Domains\Users\Database\Seeders\UserSeeder;
 use Illuminate\Support\ServiceProvider;
 use Migrator\MigratorTrait as HasMigrations;
 
@@ -15,6 +17,7 @@ class DomainServiceProvider extends ServiceProvider
     {
         $this->registerMigrations();
         $this->registerFactories();
+        $this->registerSeeders();
     }
 
     protected function registerMigrations()
@@ -27,6 +30,13 @@ class DomainServiceProvider extends ServiceProvider
 
     protected function registerFactories()
     {
+        (new UserFactory())->define();
+    }
 
+    protected function registerSeeders()
+    {
+        $this->seeders([
+            UserSeeder::class
+        ]);
     }
 }
