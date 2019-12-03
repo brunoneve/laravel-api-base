@@ -3,7 +3,10 @@
 namespace App\Units;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Http\Response;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 class ExceptionsHandler extends Handler
 {
@@ -48,4 +51,39 @@ class ExceptionsHandler extends Handler
     {
         return parent::render($request, $exception);
     }
+
+
+    /**
+     * Create a Symfony response for the given exception.
+     *
+     * @param  \Exception  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function convertExceptionToResponse(Exception $e)
+    {
+        $e = FlattenException::create($e);
+        if (config('app.debug')) {
+            $message = $e->getMessage();
+        } else {
+            $message = Response::$statusTexts[$e->getStatusCode()];
+        }
+        return response()->json(['message' => $message], $e->getStatusCode());
+    }
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+        return redirect()->guest('login');
+    }
+
 }
