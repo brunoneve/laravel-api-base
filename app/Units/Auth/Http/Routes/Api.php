@@ -10,6 +10,7 @@ class Api extends RouteFile
     {
         $this->userRoutes();
         $this->loginRoutes();
+        $this->signUpRoutes();
     }
 
     protected function userRoutes()
@@ -29,7 +30,12 @@ class Api extends RouteFile
         $this->router->post('login', 'LoginController@login');
         $this->router->group(['prefix' => 'auth', 'middleware' => 'auth:api'], function () {
             $this->router->get('me', 'LoginController@me');
-            $this->router->get('logout', 'AuthController@logout');
+            //$this->router->get('logout', 'AuthController@logout');
         });
+    }
+
+    protected function signUpRoutes()
+    {
+        $this->router->post('register', 'RegisterController@register');
     }
 }
