@@ -3,25 +3,26 @@
 namespace App\Units\Auth\Http\Controllers;
 
 use App\Support\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Lang;
 
 class LoginController extends Controller
 {
-    /**
-     * Login user and create token
-     *
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [boolean] remember_me
-     * @return [string] access_token
-     * @return [string] token_type
-     * @return [string] expires_at
-     */
+    use ThrottlesLogins;
+
     public function login(Request $request)
     {
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
         $request->validate([
             'email'         => 'required|string|email',
             'password'      => 'required|string',
@@ -30,29 +31,52 @@ class LoginController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if(!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
+        try {
+            if (! $token = app('tymon.jwt.auth')->attempt($credentials)) {
 
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
+                $this->incrementLoginAttempts($request);
+                return response()->json(['error' => 'invalid_credentials'], Response::HTTP_UNAUTHORIZED);
+            }
+        } catch (JWTException $e) {
+            $this->incrementLoginAttempts($request);
+            return response()->json(['error' => 'could_not_create_token'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
+        return $this->respondWithToken($token);
+    }
 
-        $token->save();
+    public function username()
+    {
+        return 'email';
+    }
 
+    protected function sendLockoutResponse(Request $request)
+    {
+        $seconds = $this->limiter()->availableIn(
+            $this->throttleKey($request)
+        );
+
+        $message = Lang::get('auth.throttle', [
+                'seconds' => $seconds,
+                'minutes' => ceil($seconds / 60),
+            ]);
+
+        return response()->json(['error' => $message ], Response::HTTP_TOO_MANY_REQUESTS);
+    }
+
+    protected function respondWithToken($token)
+    {
         return response()->json([
-            'access_token'  => $tokenResult->accessToken,
-            'token_type'    => 'Bearer',
-            'expires_at'    => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            //'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
     /**
      * Logout user (Revoke the token)
      *

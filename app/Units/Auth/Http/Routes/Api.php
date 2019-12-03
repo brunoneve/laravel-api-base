@@ -18,27 +18,18 @@ class Api extends RouteFile
             return [1=>2];
         });
 
-        /*$this->router->group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
-            $this->router->get('/', 'UserController@index');
-            $this->router->get('/{id}', 'UserController@show');
-            $this->router->post('/', 'UserController@store');
+        $this->router->group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
+
         });
 
-        $this->router->group(['prefix' => 'auth'], function () {
-
-            $this->router->post('login', 'AuthController@login');
-            $this->router->post('signup', 'UserController@store');
-
-            $this->router->group(['middleware' => 'auth:api'], function() {
-
-                $this->router->get('logout', 'AuthController@logout');
-                $this->router->get('user', 'UserController@user');
-            });
-        });*/
     }
 
     protected function loginRoutes()
     {
         $this->router->post('login', 'LoginController@login');
+        $this->router->group(['prefix' => 'auth', 'middleware' => 'auth:api'], function () {
+            $this->router->get('me', 'LoginController@me');
+            $this->router->get('logout', 'AuthController@logout');
+        });
     }
 }
