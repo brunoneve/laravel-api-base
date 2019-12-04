@@ -57,7 +57,7 @@ class Api extends RouteFile
     protected function passwordRoutes()
     {
         $this->router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-        // $this->router->post('password/reset', 'ResetPasswordController@reset');
+        $this->router->post('password/reset', 'ResetPasswordController@reset');
     }
 
 }
