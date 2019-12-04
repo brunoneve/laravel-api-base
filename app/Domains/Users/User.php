@@ -3,7 +3,6 @@
 namespace App\Domains\Users;
 
 use App\Domains\Users\Notifications\ResetPassword;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
