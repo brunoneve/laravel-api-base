@@ -4,6 +4,8 @@ namespace App\Units\Auth\Http\Controllers;
 
 use App\Support\Http\Controllers\Controller;
 use App\Domains\Users\User;
+use App\Domains\Users\Profile;
+
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -59,11 +61,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $profile = Profile::create([
+            'user_id'   => $user->id
+        ]);
+
+        return $user;
     }
 
         /**
