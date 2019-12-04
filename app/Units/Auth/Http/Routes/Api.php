@@ -8,9 +8,24 @@ class Api extends RouteFile
 {
     protected function routes()
     {
+        $this->registerDefaultRoutes();
+        $this->registerV1Routes();
+    }
+
+    protected function registerDefaultRoutes()
+    {
         $this->userRoutes();
         $this->loginRoutes();
         $this->signUpRoutes();
+        $this->passwordRoutes();
+    }
+
+
+    protected function registerV1Routes()
+    {
+        $this->router->group(['prefix' => 'v1'], function () {
+            $this->registerDefaultRoutes();
+        });
     }
 
     protected function userRoutes()
@@ -38,4 +53,11 @@ class Api extends RouteFile
     {
         $this->router->post('register', 'RegisterController@register');
     }
+
+    protected function passwordRoutes()
+    {
+        $this->router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+        // $this->router->post('password/reset', 'ResetPasswordController@reset');
+    }
+
 }
