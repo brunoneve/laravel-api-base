@@ -88,18 +88,21 @@ abstract class Repository
     public function save(Model $model)
     {
         $model->save();
+
         return $model;
     }
 
     public function create(array $data = [])
     {
         $model = $this->factory($data);
+
         return $this->save($model);
     }
 
     public function update(Model $model, array $data = [])
     {
         $this->fillModel($model, $data);
+
         return $this->save($model);
     }
 }
