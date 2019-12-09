@@ -44,6 +44,13 @@ abstract class Repository
         return $this->doQuery(null, $take, $paginate);
     }
 
+    public function findId($id)
+    {
+        $model = $this->newQuery();
+
+        return $model->find($id);
+    }
+
     public function delete(Model $model)
     {
         $model->delete();
