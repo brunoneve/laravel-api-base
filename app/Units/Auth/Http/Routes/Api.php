@@ -9,7 +9,7 @@ class Api extends RouteFile
     protected function routes()
     {
         $this->registerDefaultRoutes();
-        $this->registerV1Routes();
+        // $this->registerV1Routes();
     }
 
     protected function registerDefaultRoutes()
