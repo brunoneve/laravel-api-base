@@ -173,11 +173,11 @@ return [
          */
         App\Domains\Users\Providers\DomainServiceProvider::class,
 
-        /*
-         * Units Service Providers...
-         */
-
+        // AUTH Units Service Providers...
         App\Units\Auth\Providers\UnitServiceProvider::class,
+
+        //Unit Users
+        App\Units\Users\Providers\UnitServiceProvider::class,
 
 
     ],
