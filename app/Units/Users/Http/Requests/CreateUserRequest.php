@@ -4,7 +4,7 @@ namespace App\Units\Users\Http\Requests;
 
 use App\Support\Http\Request;
 
-class UserRequest extends Request
+class CreateUserRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.

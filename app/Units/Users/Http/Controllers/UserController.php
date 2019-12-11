@@ -4,7 +4,8 @@ namespace App\Units\Users\Http\Controllers;
 
 use App\Domains\Users\Repositories\UserRepository;
 use App\Support\Http\Controllers\Controller;
-use App\Units\Users\Http\Requests\UserRequest;
+use App\Units\Users\Http\Requests\CreateUserRequest;
+use App\Units\Users\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -45,7 +46,7 @@ class UserController extends Controller
         }
     }
 
-    public function store(UserRequest $request)
+    public function store(CreateUserRequest $request)
     {
         try {
             $data = $request->all();
@@ -64,8 +65,25 @@ class UserController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function update($id, UpdateUserRequest $request)
     {
+        try {
+            $user = $this->userRepository->findId($id);
 
+            if (!$user) {
+                return response()->json(['error' => 'Usuário não encontrado!'], Response::HTTP_NOT_FOUND);
+            }
+
+            $data = $request->all();
+            unset($data['email']);
+            $this->userRepository->update($user, $data);
+
+            return response()->json($user, Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
