@@ -2,7 +2,7 @@
 
 namespace App\Domains\Users\Providers;
 
-use App\Domains\Users\Database\Migrations\CreateUserProfileTable;
+use App\Domains\Users\Database\Migrations\AlterUsersTable;
 use App\Domains\Users\Database\Migrations\CreatePasswordResetTable;
 use App\Domains\Users\Database\Migrations\CreateUsersTable;
 use App\Domains\Users\Database\Factories\UserFactory;
@@ -26,7 +26,7 @@ class DomainServiceProvider extends ServiceProvider
         $this->migrations([
             CreateUsersTable::class,
             CreatePasswordResetTable::class,
-            CreateUserProfileTable::class,
+            AlterUsersTable::class,
         ]);
     }
 
