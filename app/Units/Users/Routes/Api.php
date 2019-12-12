@@ -27,7 +27,6 @@ class Api extends RouteFile
 
     protected function userRoutes()
     {
-
         $this->router->group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
             $this->router->get('/', 'UserController@index');
             $this->router->get('/{id}', 'UserController@show');
