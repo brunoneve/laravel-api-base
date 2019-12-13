@@ -167,6 +167,7 @@ return [
          */
         Migrator\MigrationServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /**
          * Domains Service Providers..
@@ -175,9 +176,11 @@ return [
 
         // AUTH Units Service Providers...
         App\Units\Auth\Providers\UnitServiceProvider::class,
-
         //Unit Users
         App\Units\Users\Providers\UnitServiceProvider::class,
+        //Unit ACL
+        App\Units\ACL\Providers\UnitServiceProvider::class,
+
 
 
     ],
