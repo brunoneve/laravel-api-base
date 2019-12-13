@@ -2,6 +2,7 @@
 
 namespace App\Domains\Users\Providers;
 
+use App\Domains\Users\Database\Migrations\createACLTable;
 use App\Domains\Users\Database\Migrations\AlterUsersTable;
 use App\Domains\Users\Database\Migrations\CreatePasswordResetTable;
 use App\Domains\Users\Database\Migrations\CreateUsersTable;
@@ -27,6 +28,7 @@ class DomainServiceProvider extends ServiceProvider
             CreateUsersTable::class,
             CreatePasswordResetTable::class,
             AlterUsersTable::class,
+            createACLTable::class,
         ]);
     }
 
