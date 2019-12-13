@@ -33,7 +33,6 @@ class Api extends RouteFile
             $this->router->post('/', 'UserController@store');
             $this->router->put('/{id}', 'UserController@update');
         });
-
     }
 
 }
