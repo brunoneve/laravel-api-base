@@ -28,7 +28,10 @@ class Api extends RouteFile
     protected function roleRoutes()
     {
         $this->router->group(['prefix' => 'role', 'middleware' => 'auth:api'], function () {
-            $this->router->get('/', 'RoleController@index');
+            $this->router->get('', 'RoleController@index');
+            $this->router->post('', 'RoleController@store');
+            $this->router->get('/{id}', 'RoleController@show');
+            $this->router->put('/{id}', 'RoleController@update');
         });
     }
 
