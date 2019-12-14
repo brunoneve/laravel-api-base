@@ -63,7 +63,6 @@ class RoleController extends Controller
 
             return response()->json('Ocorreu um error interno', Response::HTTP_INTERNAL_SERVER_ERROR);
 
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
