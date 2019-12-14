@@ -38,8 +38,10 @@ class Api extends RouteFile
     public function permissionRoutes()
     {
         $this->router->group(['prefix' => 'permission', 'middleware' => 'auth:api'], function () {
-            $this->router->get('/', 'PermissionController@index');
-
+            $this->router->get('', 'PermissionController@index');
+            $this->router->post('', 'PermissionController@store');
+            $this->router->get('/{id}', 'PermissionController@show');
+            $this->router->put('/{id}', 'PermissionController@update');
         });
 
     }
