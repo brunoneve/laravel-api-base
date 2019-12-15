@@ -13,6 +13,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable, HasRoles;
 
     public static $resetPasswordRoute;
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.

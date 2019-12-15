@@ -50,7 +50,17 @@ class UserController extends Controller
     {
         try {
             $data = $request->all();
+            $roles = $request['roles']; //Retrieving the roles field
             $user = $this->userRepository->create($data);
+
+            //Checking if a role was selected
+            /*if (isset($roles)) {
+
+                foreach ($roles as $role) {
+                $role_r = Role::where('id', '=', $role)->firstOrFail();
+                $user->assignRole($role_r); //Assigning role to user
+                }
+            }*/
 
             if ($user) {
                 return response()->json($user, Response::HTTP_OK);
@@ -74,9 +84,16 @@ class UserController extends Controller
                 return response()->json(['error' => 'Usuário não encontrado!'], Response::HTTP_NOT_FOUND);
             }
 
-            $data = $request->all();
-            unset($data['email']);
+            $data = $request->only(['name', 'password', 'birth_date', 'cpf', 'phone']);
+            $role = $request['role'];
             $this->userRepository->update($user, $data);
+
+            if (isset($role)) {
+                $user->roles()->sync($role);  //If one or more role is selected associate user to roles
+            }
+            else {
+                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+            }
 
             return response()->json($user, Response::HTTP_OK);
 
