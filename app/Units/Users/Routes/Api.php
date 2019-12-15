@@ -27,11 +27,11 @@ class Api extends RouteFile
 
     protected function userRoutes()
     {
-        $this->router->group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
-            $this->router->get('/', 'UserController@index');
-            $this->router->get('/{id}', 'UserController@show');
-            $this->router->post('/', 'UserController@store');
-            $this->router->put('/{id}', 'UserController@update');
+        $this->router->group(['prefix' => 'user', 'middleware' => ['auth:api','role:Admin']], function () {
+            $this->router->get('/', 'UserController@index')->middleware('permission:user.index');
+            $this->router->get('/{id}', 'UserController@show')->middleware('permission:user.show');
+            $this->router->post('/', 'UserController@store')->middleware('permission:user.create');
+            $this->router->put('/{id}', 'UserController@update')->middleware('permission:user.edit');
         });
     }
 
