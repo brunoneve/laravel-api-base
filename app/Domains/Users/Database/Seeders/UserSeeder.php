@@ -9,8 +9,15 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+
+        User::create([
+    		'name'  	=> 'Bruno Neves',
+    		'email' 	=> 'brunu.neves@gmail.com',
+    		'password' 	=> bcrypt('admin'),
+        ]);
+
         factory(User::class)
-            ->times(30)
+            ->times(10)
             ->create();
     }
 }
