@@ -7,6 +7,7 @@ use App\Domains\Users\Database\Migrations\AlterUsersTable;
 use App\Domains\Users\Database\Migrations\CreatePasswordResetTable;
 use App\Domains\Users\Database\Migrations\CreateUsersTable;
 use App\Domains\Users\Database\Factories\UserFactory;
+use App\Domains\Users\Database\Seeders\RolePermissionSeeder;
 use App\Domains\Users\Database\Seeders\UserSeeder;
 use Illuminate\Support\ServiceProvider;
 use Migrator\MigratorTrait as HasMigrations;
@@ -40,7 +41,8 @@ class DomainServiceProvider extends ServiceProvider
     protected function registerSeeders()
     {
         $this->seeders([
-            UserSeeder::class
+            UserSeeder::class,
+            RolePermissionSeeder::class,
         ]);
     }
 }
