@@ -73,10 +73,6 @@ class LoginController extends Controller
         ]);
     }
 
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
     /**
      * Logout user (Revoke the token)
      *
