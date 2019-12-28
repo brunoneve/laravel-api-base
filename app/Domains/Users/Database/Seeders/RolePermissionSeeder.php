@@ -4,6 +4,7 @@ namespace App\Domains\Users\Database\Seeders;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Domains\Users\User;
 use Illuminate\Database\Seeder;
 
 class RolePermissionSeeder extends Seeder
@@ -33,5 +34,9 @@ class RolePermissionSeeder extends Seeder
         //Admin Role
         $admin = Role::create(['name' => 'Admin']);
         $admin->givePermissionTo(Permission::all());
+
+        //Set role user admin
+        $user = User::find(1);
+        $user->assignRole('Admin');
     }
 }
